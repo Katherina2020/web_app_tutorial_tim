@@ -12,12 +12,14 @@ def logout():
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
+    # get all of the information from my forms
     if request.method == 'POST':
         email = request.form.get('email')
         firstName = request.form.get('first name')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
+        # and made basic python checks if this information is valid
         # if this information is not valid
         # I don't want to create the new user account
         if len(email) < 4:
