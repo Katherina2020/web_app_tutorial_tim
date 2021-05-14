@@ -37,6 +37,42 @@
       </div>
     </nav>
 
+    <!-- the block that will allow us to see the flash messages-->
+    <!-- this is what we would see when we have an error -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <!-- if the message was in the category error we whant to show the error-->
+        <!-- if it was successfull we show the successfull message-->
+        {% for category, message in messages %}
+        {% if category == "error"%}
+        <!-- allow to dismiss the alerts and show them by default-->
+          <div class="alert alert-danger alter-dismissable fade show" role="alert">
+            <!-- show the message -->
+            {{ message }}
+            <!-- add the button that will allow us to dismiss the alerts-->
+            <button type="button" class="close" data-dismiss="alert">
+              <!-- show icon -->
+              <span aria-hidden="true">&times;</span>
+            </button>>
+          </div>
+        {% else %}
+          <!-- this is what we would see if we have a success-->
+          <div class="alert alert-success alter-dismissable fade show" role="alert">
+            <!-- show the message -->
+            {{ message }}
+            <!-- add the button that will allow us to dismiss the alerts-->
+            <button type="button" class="close" data-dismiss="alert">
+              <!-- show icon -->
+              <span aria-hidden="true">&times;</span>
+            </button>>
+          </div>
+        {% endif %}
+        {% endfor %}
+
+        
+      {% endif %}
+    {% endwith %}
+
     <!-- block in that we can put content on the screen-->
     <div class="container">
       {% block content %} {% endblock %}
