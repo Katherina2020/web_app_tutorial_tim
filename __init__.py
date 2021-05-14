@@ -3,7 +3,7 @@ from flask import Flask
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET KEY'] = 'hfyfik gfkukf'
+    app.config['SECRET_KEY'] = 'hfyfik gfkukf'
 
     # register blueprint into init.py
     # we have a blueprint that is containing some 
