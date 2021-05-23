@@ -1,4 +1,8 @@
 from flask import Blueprint, render_template, request, flash
+from .models import User
+# few things from flask login that will allow to hash a password
+# sequre the password  - change the password (or convert the password)
+from werkzeug.security import generate_password_hash, check_password_hash
 
 auth = Blueprint('auth', __name__)
 
@@ -39,5 +43,8 @@ def sign_up():
             # add user to the database
             flash('Account created', category='success')
             print("Account created!")
+            # create a new user
+            new_user = User(email=email, firstName=firstName, password=generate_password_hash(password1, method='sha256'))
+            # add account to the database
     return render_template("sign_up.html")
         
