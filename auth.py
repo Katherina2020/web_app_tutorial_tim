@@ -4,6 +4,11 @@ from .models import User
 # sequre the password  - change the password (or convert the password)
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
+# user don't need to see if he is not logged in
+# and if he is logged in he don't need to see Login and SIGN UP  in navbar menu
+from flask_login import login_user, login_required, logout_user, current_user
+
+
 auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -17,6 +22,10 @@ def login():
         if user:
             if check_password_hash(user.password, password):
                 flash('Logged in successfully!', category ='success')
+                # login the user, remebers the fact that user is logged in during flask application session or until user clears history  
+                login_user(user, remember=True)
+                # if we logged succesfully we need to redirect user to home page
+                return redirect(url_for('views.home'))
             else: 
                 flash('Incorrect password, try again.', category='error')
         else:
@@ -24,8 +33,11 @@ def login():
     return render_template("login.html", boolean = False,text="Testing", user="Kathy")
 
 @auth.route('/logout')
+# make sure that we are not able access the root if we are not logged in
+@login_required
 def logout():
-    return "<p>logout</p>"
+    logout_user()
+    return redirect(url_for('auth.login'))
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
@@ -61,6 +73,8 @@ def sign_up():
             # add account to the database
             db.session.add(new_user)
             db.session.commit()
+            # login the user, remembers the fact that user is logged in during flask application session or until user clears history  
+            login_user(user, remember=True)
 
             # add user to the database
             flash('Account created', category='success')
