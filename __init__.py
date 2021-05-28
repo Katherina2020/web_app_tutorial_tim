@@ -2,6 +2,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
+from flask_login import LoginManager
 
 db = SQLAlchemy()
 DB_NAME ="database.db"
@@ -13,7 +14,8 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     # initialize database
     db.init_app(app)
-   
+
+
     
     # register blueprint into init.py
     # we have a blueprint that is containing some 
@@ -28,6 +30,19 @@ def create_app():
     from .models import User, Note
 
     create_database(app)
+
+    login_manager = LoginManager()
+    # where flask should redirect us if user is not logged if
+    login_manager.login_view = 'auth.login'
+    # telling to logging_manager which app we are using
+    login_manager.init_app(app)
+
+    # tell flask what user we are looking for
+    # looking for a user module and we are going refference them by id
+    @login_manager.user_loader
+    def load_user(id):
+        return User.query.get(int(id))
+   
 
     return app
 
