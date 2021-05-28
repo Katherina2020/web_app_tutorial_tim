@@ -1,6 +1,6 @@
 # This file stores standart routs for our website that are not related to authentication 
 from flask import Blueprint, render_template
-from flask_login import login_required,current_user
+from flask_login import login_required, current_user
 
 views = Blueprint('views', __name__)
 
@@ -8,5 +8,6 @@ views = Blueprint('views', __name__)
 @views.route('/')
 @login_required     # now you can't go to the home page if you are not logged in
 def home():
-    return render_template("home.html")
+    # user=current_user means that we will be able in a template reference this current user if it's authentificated
+    return render_template("home.html", user=current_user)
     
