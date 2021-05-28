@@ -2,6 +2,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
+# LoginManager contains the code that lets application and Flask-Login work together
 from flask_login import LoginManager
 
 db = SQLAlchemy()
@@ -37,11 +38,12 @@ def create_app():
     # telling to logging_manager which app we are using
     login_manager.init_app(app)
 
+    @login_manager.user_loader      # reload the user object from the user ID stored in the session
     # tell flask what user we are looking for
-    # looking for a user module and we are going refference them by id
-    @login_manager.user_loader
     def load_user(id):
         return User.query.get(int(id))
+        # it should take the unicode ID of a user and return the corresponding user object
+        # It should return None (not raise an exception) if the ID is not valid
    
 
     return app
