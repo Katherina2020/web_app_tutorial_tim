@@ -1,8 +1,25 @@
 <!DOCTYPE html>
 <!-- define html document that use base.html-->
 {% extends "base.html"%}
-{% block title %}Changed{% endblock%}
+{% block title %}Home{% endblock%}
 
 {% block content %} 
-<h1>This is the home page</h1>
+<!-- generate what show all of the notes -->
+<h1 align="center">Notes</h1>
+<ul class="list-group list-group-flush" id="notes">
+    {% for note in user.notes %}
+    <!-- display notes -->
+    <li class="list-group-item">{{ note.data }}</li>
+    {% endfor %}
+</ul>
+
+<!-- add notes -->
+<form method="POST">
+    <textarea name="note" id="note" class="form-control"></textarea>
+    <br /> <!-- a single line break -->
+    <div align="center">
+        <button type="submit" class="btn btn-primary">Add Note</button>
+    </div>
+
+</form>
 {% endblock %}
