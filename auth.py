@@ -30,7 +30,7 @@ def login():
                 flash('Incorrect password, try again.', category='error')
         else:
             flash('Email does not exist.', category='error')
-    return render_template("login.html", boolean = False,text="Testing", user="Kathy")
+    return render_template("login.html", user=current_user)
 
 @auth.route('/logout')
 # make sure that we are not able access the root if we are not logged in
@@ -82,5 +82,5 @@ def sign_up():
             # redirect user to the home page 
             return redirect(url_for('views.home'))
 
-    return render_template("sign_up.html")
+    return render_template("sign_up.html", user=current_user)
         
